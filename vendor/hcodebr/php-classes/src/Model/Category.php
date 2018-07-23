@@ -4,6 +4,7 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
+use \Hcode\Mailer;
 
 class Category extends Model {
 
@@ -13,10 +14,10 @@ class Category extends Model {
 		$sql = new Sql();
 
 		return $sql->select("SELECT * FROM tb_categories ORDER BY descategory");
+
 	}
 
 	public function save()
-
 	{
 
 		$sql = new Sql();
@@ -39,12 +40,7 @@ class Category extends Model {
 			':idcategory'=>$idcategory
 		]);
 
-		if (count($results) === 0)
-		{
-			throw new \Exception("Categoria inesistente");
-		}
-
-		$this->setData($results);
+		$this->setData($results[0]);
 
 	}
 
@@ -54,10 +50,10 @@ class Category extends Model {
 		$sql = new Sql();
 
 		$sql->query("DELETE FROM tb_categories WHERE idcategory = :idcategory", [
-			':idcategory'=>$this->getidcategory()
+			':idcategory'=>$this->getidcategory()	
 		]);
-
 	}
 
 }
+
  ?>

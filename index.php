@@ -234,7 +234,6 @@ $app->get("/admin/categories", function(){
 		'categories'=>$categories
 	]);
 
-
 });
 
 $app->get("/admin/categories/create", function(){
@@ -274,23 +273,22 @@ $app->get("/admin/categories/:idcategory/delete", function($idcategory){
 
 	header('Location: /admin/categories');
 	exit;
-
 });
 
 $app->get("/admin/categories/:idcategory", function($idcategory){
 
 	User::verifyLogin();
 
-	$category = new Category();
+	$category = new Category;
 
 	$category->get((int)$idcategory);
 
 	$page = new PageAdmin();
 
 	$page->setTpl("categories-update", [
-		'category'=>$category->getValues()
+		'category'=>$category->getValue()
 	]);
-	
+
 });
 
 $app->post("/admin/categories/:idcategory", function($idcategory){
@@ -305,9 +303,8 @@ $app->post("/admin/categories/:idcategory", function($idcategory){
 
 	$category->save();
 
-	header('Location: /admim/categories');
+	header('Location: /admin/categories');
 	exit;
-	
 });
 
 $app->run();
