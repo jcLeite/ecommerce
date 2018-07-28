@@ -11,6 +11,54 @@ class User extends Model {
 	const SESSION = "User";
 	const SECRET = "HcodePHP7_secret";
 
+	public static function getFromSession()
+	{
+
+		$user = new User;
+
+		if (isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION]['iduser'] > 0) {
+
+			$user->setData($_SESSION[User::SESSION]);
+
+		}
+
+		return $user;
+
+	}
+
+	public static function checkLogin($inadmin = true)
+	{
+
+		if (
+			!isset($_SESSION[User::SESSION])
+			||
+			!$_SESSION[User::SESSION]
+			||
+			!(int)$_SESSION[User::SESSION]["iduser"] > 0
+		) {
+			//Não está logado
+			return false;
+
+		} else {
+
+			if ($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true) {
+
+				return true;
+
+			}else if ($inadmin === false) {
+
+				return true;
+
+			} else {
+
+				return false;
+
+			}
+
+		}
+
+	}
+
 	public static function login($login, $password)
 	{
 
@@ -22,7 +70,7 @@ class User extends Model {
 
 		if (count($results) === 0)
 		{
-			throw new \Exception("Usuátio inesistente ou senha inválida");
+			throw new \Exception("Usuário inesistente ou senha inválida");
 		}
 
 		$data = $results[0];
@@ -39,7 +87,7 @@ class User extends Model {
 			return $user;
 
 		} else {
-			throw new \Exception("Usuátio inesistente ou senha inválida");
+			throw new \Exception("Usuário inesistente ou senha inválida");
 		}	
 
 	}
@@ -186,11 +234,12 @@ class User extends Model {
                 } else {
                     $link = "http://www.jclecommerce.com.br/forgot/reset?code=$result";
                 } 
-               
+              
                 $mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da JCL Store", "forgot", array(
                     "name"=>$data['desperson'],
                     "link"=>$link
                 )); 
+               
                 $mailer->send();
                 return $link;
             }
