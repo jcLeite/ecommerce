@@ -70,7 +70,7 @@
                                         </td>
 
                                         <td class="product-subtotal">
-                                            <span class="amount">R$700,00</span> 
+                                            <span class="amount">R$<?php echo formatPrice(($value1["vlprice"])*($value1["nrqtd"])); ?></span> 
                                         </td>
                                     </tr>
                                     <?php } ?>
